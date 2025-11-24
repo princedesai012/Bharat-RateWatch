@@ -86,7 +86,7 @@ const Home: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10">
         
         {/* Ad Slot Top */}
-        <AdPlaceholder slot="top-banner" className="mb-8" label="Sponsored" />
+        <AdPlaceholder slot="7220504723" className="mb-8" label="Sponsored" />
 
         {/* Last Updated Info */}
         <div className="flex justify-between items-end mb-6">
@@ -150,7 +150,7 @@ const Home: React.FC = () => {
             </div>
 
             {/* In-Content Ad */}
-            <AdPlaceholder slot="in-content" className="mb-8" />
+            <AdPlaceholder slot="7220504723" className="mb-8" />
 
             {/* Fuel Section */}
             <div className="mb-8">

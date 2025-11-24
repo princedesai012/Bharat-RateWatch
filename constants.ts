@@ -18,7 +18,7 @@ export const DEFAULT_PRICES: PriceData = {
 
 export const CACHE_DURATION_MS = 6 * 60 * 60 * 1000; // 6 hours
 
-export const ADSENSE_CLIENT_ID = 'ca-pub-XXXXXXXXXXXXXXXX'; // Placeholder
+export const ADSENSE_CLIENT_ID = 'ca-pub-8056938512195354'; // Placeholder
 
 export const NAV_ITEMS = [
   { label: 'Home', path: '/' },
