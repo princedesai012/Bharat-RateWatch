@@ -1,9 +1,14 @@
 import React from 'react';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const Contact: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
+      <SEO 
+        title="Contact Us" 
+        description="Get in touch with Daily Rates India team for support, feedback, or business inquiries." 
+      />
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Contact Us</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">

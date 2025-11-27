@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { 
   Droplet, Flame, Coins, Zap, ChefHat, MapPin, 
-  RotateCcw, Calendar, Loader2 
+  RotateCcw, Calendar, Loader2, Info
 } from 'lucide-react';
 import { fetchPricesForCity } from '../services/geminiService';
 import { PriceData, City } from '../types';
 import { CITIES } from '../constants';
 import PriceCard from '../components/PriceCard';
 import AdPlaceholder from '../components/AdPlaceholder';
+import SEO from '../components/SEO';
 
 const Home: React.FC = () => {
   const [selectedCity, setSelectedCity] = useState<City>(City.INDIA);
@@ -34,7 +35,7 @@ const Home: React.FC = () => {
       "@type": "PriceSpecification",
       "validFrom": new Date().toISOString(),
       "priceCurrency": "INR",
-      "price": data.gold_24k, // Example
+      "price": data.gold_24k,
       "description": `Current market prices in ${selectedCity} for Gold, Silver, Fuel and Vegetables.`
     };
     
@@ -50,14 +51,19 @@ const Home: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20">
+      <SEO 
+        title={`Today's Rates in ${selectedCity}`}
+        description={`Track today's live Gold, Silver, Petrol, Diesel, LPG and Vegetable prices in ${selectedCity}. Real-time updates.`}
+      />
+
       {/* Hero Section */}
       <div className="bg-brand-600 dark:bg-gray-800 text-white pb-20 pt-10 px-4">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">
-            Daily Market Rates & Prices
+            Daily Market Rates & Prices in India
           </h1>
           <p className="text-brand-100 dark:text-gray-400 text-lg mb-8 max-w-2xl">
-            Track real-time prices for Gold, Silver, Petrol, Diesel, LPG, and Vegetables in India. Updated daily.
+            Stay updated with the latest real-time prices for Gold, Silver, Petrol, Diesel, LPG, and essential vegetables across major Indian cities.
           </p>
 
           {/* Filter Bar */}
@@ -85,37 +91,39 @@ const Home: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10">
         
-        {/* Ad Slot Top */}
-        <AdPlaceholder slot="7220504723" className="mb-8" label="Sponsored" />
-
-        {/* Last Updated Info */}
-        <div className="flex justify-between items-end mb-6">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Latest Rates in {selectedCity}
-            </h2>
-            <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-1">
-              <Calendar size={14} className="mr-1" />
-              <span>{new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
-            </div>
-          </div>
-          <button 
-            onClick={() => loadData(selectedCity)} 
-            className="flex items-center text-sm text-brand-600 dark:text-brand-400 hover:underline"
-            disabled={loading}
-          >
-            <RotateCcw size={14} className={`mr-1 ${loading ? 'animate-spin' : ''}`} />
-            Refresh
-          </button>
-        </div>
-
+        {/* Dynamic Content Section */}
         {loading ? (
-          <div className="flex justify-center items-center h-64">
-            <Loader2 size={48} className="animate-spin text-brand-600" />
-            <span className="ml-3 text-lg text-gray-600 dark:text-gray-300">Fetching live rates...</span>
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-12 flex flex-col justify-center items-center min-h-[300px] mb-8">
+            <Loader2 size={48} className="animate-spin text-brand-600 mb-4" />
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Updating Prices for {selectedCity}...</h2>
+            <p className="text-gray-500 dark:text-gray-400">Fetching the latest rates from market sources.</p>
           </div>
         ) : data ? (
           <>
+            {/* Top Ad Slot */}
+            <AdPlaceholder slot="7220504723" className="mb-8" label="Sponsored" />
+
+            {/* Last Updated Info */}
+            <div className="flex justify-between items-end mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  Latest Rates in {selectedCity}
+                </h2>
+                <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  <Calendar size={14} className="mr-1" />
+                  <span>{new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                </div>
+              </div>
+              <button 
+                onClick={() => loadData(selectedCity)} 
+                className="flex items-center text-sm text-brand-600 dark:text-brand-400 hover:underline"
+                disabled={loading}
+              >
+                <RotateCcw size={14} className={`mr-1 ${loading ? 'animate-spin' : ''}`} />
+                Refresh
+              </button>
+            </div>
+
             {/* Metals Section */}
             <div className="mb-8">
               <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 flex items-center">
@@ -215,22 +223,78 @@ const Home: React.FC = () => {
             </div>
 
             {/* Data Source Disclaimer */}
-            <div className="text-xs text-gray-400 text-center mt-6">
+            <div className="text-xs text-gray-400 text-center mt-6 mb-12">
               Source: {data.source}. Prices are indicative and may vary by local vendor. <br/>
               Last Check: {new Date(data.lastUpdated).toLocaleTimeString()}
             </div>
           </>
         ) : (
-          <div className="text-center text-red-500">Failed to load data. Please try again later.</div>
+          <div className="text-center text-red-500 bg-white dark:bg-gray-800 p-8 rounded-lg shadow mb-8">
+            <p className="mb-2">We encountered an issue fetching the latest rates.</p>
+            <button 
+                onClick={() => loadData(selectedCity)} 
+                className="text-brand-600 font-medium hover:underline"
+              >
+                Try Again
+              </button>
+          </div>
         )}
+
+        {/* STATIC CONTENT - Rendered OUTSIDE loading check */}
+        {/* This ensures Google AdSense always sees "Publisher Content" even if API is slow */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 mb-12">
+          <div className="flex items-center mb-6">
+            <Info className="text-brand-600 mr-2" />
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Market Insights & FAQs</h2>
+          </div>
+          
+          <div className="space-y-8">
+            <section>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Why do Gold rates fluctuate daily?</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                Gold prices in India are influenced by international market trends, currency exchange rates (USD to INR), and import duties. 
+                Additionally, local factors such as festive demand (weddings, Diwali) and monsoon quality can impact the daily rate of 22K and 24K gold. 
+                We track these changes daily to provide you with the most accurate estimates.
+              </p>
+            </section>
+
+            <section>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">How are Fuel prices determined?</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                Petrol and Diesel prices in India are revised daily at 6:00 AM by Oil Marketing Companies (OMCs) like IOCL, BPCL, and HPCL. 
+                The pricing formula includes the cost of crude oil in the international market, excise duty levied by the Central Government, 
+                Value Added Tax (VAT) by State Governments, and dealer commissions. This is why fuel prices vary significantly between states like Delhi, Karnataka, and Maharashtra.
+              </p>
+            </section>
+
+            <section>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Understanding Vegetable Market Rates</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                Vegetable prices, particularly for staples like Onion, Tomato, and Potato (TOP), are highly volatile. They depend on supply chain conditions, 
+                weather affecting crop yields, and transport costs. Our data reflects the wholesale average converted to retail expectations, though 
+                local sabzi mandi rates may vary slightly based on freshness and quality.
+              </p>
+            </section>
+
+            <section>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Difference between 24K and 22K Gold</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                <strong>24K Gold</strong> is the purest form of gold (99.9% pure) and is mostly used for investment purposes like coins and bars. It is too soft for making intricate jewelry. 
+                <strong>22K Gold</strong> contains 91.6% gold mixed with other metals like copper or zinc to provide durability, making it the standard for jewelry making in India.
+              </p>
+            </section>
+          </div>
+        </div>
       </div>
 
       {/* Sticky Bottom Ad */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 shadow-lg z-40 p-2 hidden md:block">
-         <div className="max-w-4xl mx-auto h-[90px] flex items-center justify-center bg-gray-100 dark:bg-gray-800 border border-dashed border-gray-300 dark:border-gray-600 rounded">
-            <span className="text-xs text-gray-400">Sticky Footer Ad (728x90)</span>
-         </div>
-      </div>
+      {data && !loading && (
+        <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-40 p-2 hidden md:block">
+           <div className="max-w-[728px] mx-auto">
+             <AdPlaceholder slot="7220504723" className="my-0" label="" />
+           </div>
+        </div>
+      )}
     </div>
   );
 };

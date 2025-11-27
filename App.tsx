@@ -8,6 +8,9 @@ import Contact from './pages/Contact';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Terms from './pages/Terms';
 import Disclaimer from './pages/Disclaimer';
+import GoldGuide from './pages/GoldGuide';
+import FuelGuide from './pages/FuelGuide';
+import NotFound from './pages/NotFound';
 
 const App: React.FC = () => {
   return (
@@ -17,11 +20,14 @@ const App: React.FC = () => {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/gold-guide" element={<GoldGuide />} />
+            <Route path="/fuel-guide" element={<FuelGuide />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/disclaimer" element={<Disclaimer />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
         <Footer />

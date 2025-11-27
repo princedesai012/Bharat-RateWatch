@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 mt-auto">
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           
           {/* Brand */}
           <div className="space-y-4">
@@ -17,9 +17,18 @@ const Footer: React.FC = () => {
             </p>
           </div>
 
+          {/* Resources */}
+          <div className="space-y-4">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-white tracking-wider uppercase">Resources</h3>
+            <ul className="space-y-2">
+              <li><Link to="/gold-guide" className="text-sm text-gray-500 dark:text-gray-400 hover:text-brand-600">Gold Buying Guide</Link></li>
+              <li><Link to="/fuel-guide" className="text-sm text-gray-500 dark:text-gray-400 hover:text-brand-600">Fuel Pricing Formula</Link></li>
+            </ul>
+          </div>
+
           {/* Quick Links */}
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white tracking-wider uppercase">Quick Links</h3>
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-white tracking-wider uppercase">Company</h3>
             <ul className="space-y-2">
               <li><Link to="/" className="text-sm text-gray-500 dark:text-gray-400 hover:text-brand-600">Home</Link></li>
               <li><Link to="/about" className="text-sm text-gray-500 dark:text-gray-400 hover:text-brand-600">About Us</Link></li>

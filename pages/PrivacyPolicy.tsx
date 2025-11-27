@@ -1,8 +1,13 @@
 import React from 'react';
+import SEO from '../components/SEO';
 
 const PrivacyPolicy: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
+      <SEO 
+        title="Privacy Policy" 
+        description="Privacy Policy of Daily Rates India regarding the collection, use, and disclosure of personal data." 
+      />
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Privacy Policy</h1>
       <div className="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-400">
         <p className="mb-4">
