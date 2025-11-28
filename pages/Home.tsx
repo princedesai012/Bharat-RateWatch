@@ -17,6 +17,7 @@ const Home: React.FC = () => {
 
   const loadData = async (city: City) => {
     setLoading(true);
+    setData(null); // Clear old data to ensure loading state is clean
     const result = await fetchPricesForCity(city);
     setData(result);
     setLoading(false);
@@ -90,15 +91,56 @@ const Home: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10">
+
+        {/* --- CRITICAL CHANGE FOR ADSENSE --- */}
+        {/* STATIC CONTENT is now rendered immediately, outside any loading checks. */}
+        {/* This ensures Google's crawler always sees a content-rich page. */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 mb-12">
+          <div className="flex items-center mb-6">
+            <Info className="text-brand-600 mr-2" />
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Market Insights & FAQs</h2>
+          </div>
+          
+          <div className="space-y-8">
+            <section>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Why do Gold rates fluctuate daily?</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                Gold prices in India are influenced by international market trends, currency exchange rates (USD to INR), and import duties. 
+                Additionally, local factors such as festive demand (weddings, Diwali) and monsoon quality can impact the daily rate of 22K and 24K gold. 
+                We track these changes daily to provide you with the most accurate estimates.
+              </p>
+            </section>
+
+            <section>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">How are Fuel prices determined?</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                Petrol and Diesel prices in India are revised daily at 6:00 AM by Oil Marketing Companies (OMCs) like IOCL, BPCL, and HPCL. 
+                The pricing formula includes the cost of crude oil in the international market, excise duty levied by the Central Government, 
+                Value Added Tax (VAT) by State Governments, and dealer commissions. This is why fuel prices vary significantly between states like Delhi, Karnataka, and Maharashtra.
+              </p>
+            </section>
+
+            <section>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Understanding Vegetable Market Rates</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                Vegetable prices, particularly for staples like Onion, Tomato, and Potato (TOP), are highly volatile. They depend on supply chain conditions, 
+                weather affecting crop yields, and transport costs. Our data reflects the wholesale average converted to retail expectations, though 
+                local sabzi mandi rates may vary slightly based on freshness and quality.
+              </p>
+            </section>
+          </div>
+        </div>
         
         {/* Dynamic Content Section */}
-        {loading ? (
+        {loading && (
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-12 flex flex-col justify-center items-center min-h-[300px] mb-8">
             <Loader2 size={48} className="animate-spin text-brand-600 mb-4" />
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Updating Prices for {selectedCity}...</h2>
             <p className="text-gray-500 dark:text-gray-400">Fetching the latest rates from market sources.</p>
           </div>
-        ) : data ? (
+        )}
+
+        {!loading && data && (
           <>
             {/* Last Updated Info */}
             <div className="flex justify-between items-end mb-4">
@@ -114,9 +156,8 @@ const Home: React.FC = () => {
               <button 
                 onClick={() => loadData(selectedCity)} 
                 className="flex items-center text-sm text-brand-600 dark:text-brand-400 hover:underline"
-                disabled={loading}
               >
-                <RotateCcw size={14} className={`mr-1 ${loading ? 'animate-spin' : ''}`} />
+                <RotateCcw size={14} className="mr-1" />
                 Refresh
               </button>
             </div>
@@ -158,7 +199,7 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-            {/* Top Ad Slot - MOVED HERE */}
+            {/* --- ADSENSE FIX --- Ad is now inside the !loading && data check */}
             <AdPlaceholder slot="7220504723" className="mb-8" label="Sponsored" />
 
             {/* Fuel Section */}
@@ -190,8 +231,8 @@ const Home: React.FC = () => {
                 />
               </div>
             </div>
-
-            {/* In-Content Ad */}
+            
+            {/* --- ADSENSE FIX --- Ad is now inside the !loading && data check */}
             <AdPlaceholder slot="7220504723" className="mb-8" />
 
             {/* Vegetables Section */}
@@ -232,7 +273,9 @@ const Home: React.FC = () => {
               Last Check: {new Date(data.lastUpdated).toLocaleTimeString()}
             </div>
           </>
-        ) : (
+        )}
+
+        {!loading && !data && (
           <div className="text-center text-red-500 bg-white dark:bg-gray-800 p-8 rounded-lg shadow mb-8">
             <p className="mb-2">We encountered an issue fetching the latest rates.</p>
             <button 
@@ -243,56 +286,10 @@ const Home: React.FC = () => {
               </button>
           </div>
         )}
-
-        {/* STATIC CONTENT - Rendered OUTSIDE loading check */}
-        {/* This ensures Google AdSense always sees "Publisher Content" even if API is slow */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 mb-12">
-          <div className="flex items-center mb-6">
-            <Info className="text-brand-600 mr-2" />
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Market Insights & FAQs</h2>
-          </div>
-          
-          <div className="space-y-8">
-            <section>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Why do Gold rates fluctuate daily?</h3>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                Gold prices in India are influenced by international market trends, currency exchange rates (USD to INR), and import duties. 
-                Additionally, local factors such as festive demand (weddings, Diwali) and monsoon quality can impact the daily rate of 22K and 24K gold. 
-                We track these changes daily to provide you with the most accurate estimates.
-              </p>
-            </section>
-
-            <section>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">How are Fuel prices determined?</h3>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                Petrol and Diesel prices in India are revised daily at 6:00 AM by Oil Marketing Companies (OMCs) like IOCL, BPCL, and HPCL. 
-                The pricing formula includes the cost of crude oil in the international market, excise duty levied by the Central Government, 
-                Value Added Tax (VAT) by State Governments, and dealer commissions. This is why fuel prices vary significantly between states like Delhi, Karnataka, and Maharashtra.
-              </p>
-            </section>
-
-            <section>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Understanding Vegetable Market Rates</h3>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                Vegetable prices, particularly for staples like Onion, Tomato, and Potato (TOP), are highly volatile. They depend on supply chain conditions, 
-                weather affecting crop yields, and transport costs. Our data reflects the wholesale average converted to retail expectations, though 
-                local sabzi mandi rates may vary slightly based on freshness and quality.
-              </p>
-            </section>
-
-            <section>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Difference between 24K and 22K Gold</h3>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                <strong>24K Gold</strong> is the purest form of gold (99.9% pure) and is mostly used for investment purposes like coins and bars. It is too soft for making intricate jewelry. 
-                <strong>22K Gold</strong> contains 91.6% gold mixed with other metals like copper or zinc to provide durability, making it the standard for jewelry making in India.
-              </p>
-            </section>
-          </div>
-        </div>
       </div>
 
-      {/* Sticky Bottom Ad */}
-      {data && !loading && (
+      {/* --- ADSENSE FIX --- Sticky Bottom Ad is already correctly conditioned */}
+      {!loading && data && (
         <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-40 p-2 hidden md:block">
            <div className="max-w-[728px] mx-auto">
              <AdPlaceholder slot="7220504723" className="my-0" label="" />
