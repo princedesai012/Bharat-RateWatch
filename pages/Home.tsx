@@ -100,11 +100,8 @@ const Home: React.FC = () => {
           </div>
         ) : data ? (
           <>
-            {/* Top Ad Slot */}
-            <AdPlaceholder slot="7220504723" className="mb-8" label="Sponsored" />
-
             {/* Last Updated Info */}
-            <div className="flex justify-between items-end mb-6">
+            <div className="flex justify-between items-end mb-4">
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                   Latest Rates in {selectedCity}
@@ -123,6 +120,10 @@ const Home: React.FC = () => {
                 Refresh
               </button>
             </div>
+            
+            <p className="text-gray-600 dark:text-gray-400 mb-6 text-sm">
+              Explore today's market prices for essential commodities. All rates are updated frequently from reliable market data to ensure accuracy for your reference.
+            </p>
 
             {/* Metals Section */}
             <div className="mb-8">
@@ -157,8 +158,8 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-            {/* In-Content Ad */}
-            <AdPlaceholder slot="7220504723" className="mb-8" />
+            {/* Top Ad Slot - MOVED HERE */}
+            <AdPlaceholder slot="7220504723" className="mb-8" label="Sponsored" />
 
             {/* Fuel Section */}
             <div className="mb-8">
@@ -189,6 +190,9 @@ const Home: React.FC = () => {
                 />
               </div>
             </div>
+
+            {/* In-Content Ad */}
+            <AdPlaceholder slot="7220504723" className="mb-8" />
 
             {/* Vegetables Section */}
             <div className="mb-8">
