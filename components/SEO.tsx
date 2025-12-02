@@ -10,19 +10,29 @@ const SEO: React.FC<SEOProps> = ({ title, description }) => {
   const location = useLocation();
 
   useEffect(() => {
+    // Construct the full canonical URL
+    const canonicalUrl = `${window.location.origin}${location.pathname}`;
+
     // Update Title
     document.title = `${title} | DailyRatesIndia`;
 
     // Update Meta Description
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', description);
-    } else {
-      const meta = document.createElement('meta');
-      meta.name = 'description';
-      meta.content = description;
-      document.head.appendChild(meta);
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.setAttribute('name', 'description');
+      document.head.appendChild(metaDescription);
     }
+    metaDescription.setAttribute('content', description);
+    
+    // Update or create Canonical Link
+    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+      canonicalLink = document.createElement('link');
+      canonicalLink.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonicalLink);
+    }
+    canonicalLink.setAttribute('href', canonicalUrl);
     
     // Scroll to top on route change
     window.scrollTo(0, 0);

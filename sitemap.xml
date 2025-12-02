@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IMPORTANT: Replace all instances of "https://your-domain.com" with your actual website address. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://your-domain.com/</loc>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>https://your-domain.com/gold-guide</loc>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://your-domain.com/fuel-guide</loc>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://your-domain.com/about</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://your-domain.com/contact</loc>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://your-domain.com/privacy-policy</loc>
+    <priority>0.50</priority>
+  </url>
+  <url>
+    <loc>https://your-domain.com/terms</loc>
+    <priority>0.50</priority>
+  </url>
+  <url>
+    <loc>https://your-domain.com/disclaimer</loc>
+    <priority>0.50</priority>
+  </url>
+</urlset>

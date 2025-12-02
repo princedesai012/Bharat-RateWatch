@@ -32,7 +32,7 @@ export const fetchPricesForCity = async (city: City): Promise<PriceData> => {
   if (!apiKey) {
     console.warn("No API Key found. Using mock data.");
     // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise(resolve => setTimeout(resolve, 500));
     
     const variance = () => 1 + (Math.random() * 0.1 - 0.05); // +/- 5%
     const mockData: PriceData = {

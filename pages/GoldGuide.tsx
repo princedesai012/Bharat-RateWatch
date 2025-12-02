@@ -2,6 +2,7 @@ import React from 'react';
 import { Coins, ShieldCheck, Award, Info } from 'lucide-react';
 import AdPlaceholder from '../components/AdPlaceholder';
 import SEO from '../components/SEO';
+import { AD_SLOTS } from '../constants';
 
 const GoldGuide: React.FC = () => {
   return (
@@ -36,7 +37,7 @@ const GoldGuide: React.FC = () => {
             Gold is not just a metal in India; it's an emotion, a tradition, and a safety net. However, buying gold can be tricky if you don't understand the nuances of purity and pricing. This guide breaks down the essentials.
           </p>
 
-          <AdPlaceholder slot="8923481234" className="my-8" label="Advertisement" />
+          <AdPlaceholder slot={AD_SLOTS.GUIDE_ARTICLE_CONTENT} className="my-8" label="Advertisement" />
 
           <h2 className="flex items-center text-xl font-bold text-gray-900 dark:text-white mt-8 mb-4">
             <Award className="mr-2 text-brand-600" /> 
@@ -79,7 +80,7 @@ const GoldGuide: React.FC = () => {
             <li><strong>HUID Code:</strong> A 6-digit alphanumeric code unique to each piece of jewelry, allowing traceability.</li>
           </ol>
 
-          <AdPlaceholder slot="8923481234" className="my-8" label="Advertisement" />
+          <AdPlaceholder slot={AD_SLOTS.GUIDE_ARTICLE_CONTENT} className="my-8" label="Advertisement" />
 
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mt-8 mb-4">
             Understanding "Making Charges"

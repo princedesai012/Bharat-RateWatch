@@ -2,6 +2,7 @@ import React from 'react';
 import { Droplet, TrendingUp, Landmark, Truck } from 'lucide-react';
 import AdPlaceholder from '../components/AdPlaceholder';
 import SEO from '../components/SEO';
+import { AD_SLOTS } from '../constants';
 
 const FuelGuide: React.FC = () => {
   return (
@@ -36,7 +37,7 @@ const FuelGuide: React.FC = () => {
             Have you ever wondered why petrol costs ₹96 in Delhi but ₹102 in Mumbai? Or why the price changes every morning? The price you pay at the pump is significantly higher than the actual cost of the fuel due to a complex structure of taxes and commissions.
           </p>
 
-          <AdPlaceholder slot="8923481234" className="my-8" label="Advertisement" />
+          <AdPlaceholder slot={AD_SLOTS.GUIDE_ARTICLE_CONTENT} className="my-8" label="Advertisement" />
 
           <h2 className="flex items-center text-xl font-bold text-gray-900 dark:text-white mt-8 mb-4">
             <Landmark className="mr-2 text-brand-600" /> 
@@ -88,7 +89,7 @@ const FuelGuide: React.FC = () => {
             <strong>Time of Update:</strong> Prices are revised daily at 06:00 AM IST.
           </p>
 
-          <AdPlaceholder slot="8923481234" className="my-8" label="Advertisement" />
+          <AdPlaceholder slot={AD_SLOTS.GUIDE_ARTICLE_CONTENT} className="my-8" label="Advertisement" />
 
           <h2 className="flex items-center text-xl font-bold text-gray-900 dark:text-white mt-8 mb-4">
             <Truck className="mr-2 text-brand-600" /> 

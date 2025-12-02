@@ -1,57 +1,47 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { 
   Droplet, Flame, Coins, Zap, ChefHat, MapPin, 
   RotateCcw, Calendar, Loader2, Info
 } from 'lucide-react';
 import { fetchPricesForCity } from '../services/geminiService';
 import { PriceData, City } from '../types';
-import { CITIES } from '../constants';
+import { CITIES, DEFAULT_PRICES } from '../constants';
 import PriceCard from '../components/PriceCard';
-import AdPlaceholder from '../components/AdPlaceholder';
 import SEO from '../components/SEO';
+
+const LoadingSpinner: React.FC = () => (
+  <div className="flex justify-center items-center py-24">
+    <Loader2 size={40} className="animate-spin text-brand-600" />
+    <span className="ml-4 text-lg text-gray-600 dark:text-gray-400">Fetching latest rates...</span>
+  </div>
+);
+
 
 const Home: React.FC = () => {
   const [selectedCity, setSelectedCity] = useState<City>(City.INDIA);
-  const [data, setData] = useState<PriceData | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [data, setData] = useState<PriceData>(DEFAULT_PRICES);
+  const [isFetching, setIsFetching] = useState<boolean>(true);
 
-  const loadData = async (city: City) => {
-    setLoading(true);
-    setData(null); // Clear old data to ensure loading state is clean
-    const result = await fetchPricesForCity(city);
-    setData(result);
-    setLoading(false);
-  };
+  const loadData = useCallback(async (city: City) => {
+    setIsFetching(true);
+    try {
+      const result = await fetchPricesForCity(city);
+      setData(result);
+    } catch (error) {
+      console.error("Failed to fetch prices:", error);
+      setData(prev => ({...prev, source: "Error fetching data. Showing estimates."}));
+    } finally {
+      setIsFetching(false);
+    }
+  }, []);
 
   useEffect(() => {
+    // Initial load
     loadData(selectedCity);
-  }, [selectedCity]);
-
-  // Structured Data Schema for SEO
-  useEffect(() => {
-    if (!data) return;
-
-    const schema = {
-      "@context": "https://schema.org",
-      "@type": "PriceSpecification",
-      "validFrom": new Date().toISOString(),
-      "priceCurrency": "INR",
-      "price": data.gold_24k,
-      "description": `Current market prices in ${selectedCity} for Gold, Silver, Fuel and Vegetables.`
-    };
-    
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.text = JSON.stringify(schema);
-    document.head.appendChild(script);
-
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, [data, selectedCity]);
+  }, [selectedCity, loadData]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20">
+    <div className="bg-gray-50 dark:bg-gray-900 pb-20">
       <SEO 
         title={`Today's Rates in ${selectedCity}`}
         description={`Track today's live Gold, Silver, Petrol, Diesel, LPG and Vegetable prices in ${selectedCity}. Real-time updates.`}
@@ -77,7 +67,8 @@ const Home: React.FC = () => {
               <button
                 key={city}
                 onClick={() => setSelectedCity(city)}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                disabled={isFetching}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-all disabled:opacity-70 disabled:cursor-not-allowed ${
                   selectedCity === city
                     ? 'bg-brand-600 text-white shadow-md'
                     : 'bg-transparent text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600'
@@ -91,56 +82,10 @@ const Home: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10">
-
-        {/* --- CRITICAL CHANGE FOR ADSENSE --- */}
-        {/* STATIC CONTENT is now rendered immediately, outside any loading checks. */}
-        {/* This ensures Google's crawler always sees a content-rich page. */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 mb-12">
-          <div className="flex items-center mb-6">
-            <Info className="text-brand-600 mr-2" />
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Market Insights & FAQs</h2>
-          </div>
-          
-          <div className="space-y-8">
-            <section>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Why do Gold rates fluctuate daily?</h3>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                Gold prices in India are influenced by international market trends, currency exchange rates (USD to INR), and import duties. 
-                Additionally, local factors such as festive demand (weddings, Diwali) and monsoon quality can impact the daily rate of 22K and 24K gold. 
-                We track these changes daily to provide you with the most accurate estimates.
-              </p>
-            </section>
-
-            <section>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">How are Fuel prices determined?</h3>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                Petrol and Diesel prices in India are revised daily at 6:00 AM by Oil Marketing Companies (OMCs) like IOCL, BPCL, and HPCL. 
-                The pricing formula includes the cost of crude oil in the international market, excise duty levied by the Central Government, 
-                Value Added Tax (VAT) by State Governments, and dealer commissions. This is why fuel prices vary significantly between states like Delhi, Karnataka, and Maharashtra.
-              </p>
-            </section>
-
-            <section>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Understanding Vegetable Market Rates</h3>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                Vegetable prices, particularly for staples like Onion, Tomato, and Potato (TOP), are highly volatile. They depend on supply chain conditions, 
-                weather affecting crop yields, and transport costs. Our data reflects the wholesale average converted to retail expectations, though 
-                local sabzi mandi rates may vary slightly based on freshness and quality.
-              </p>
-            </section>
-          </div>
-        </div>
         
-        {/* Dynamic Content Section */}
-        {loading && (
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-12 flex flex-col justify-center items-center min-h-[300px] mb-8">
-            <Loader2 size={48} className="animate-spin text-brand-600 mb-4" />
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Updating Prices for {selectedCity}...</h2>
-            <p className="text-gray-500 dark:text-gray-400">Fetching the latest rates from market sources.</p>
-          </div>
-        )}
-
-        {!loading && data && (
+        {isFetching ? (
+          <LoadingSpinner />
+        ) : (
           <>
             {/* Last Updated Info */}
             <div className="flex justify-between items-end mb-4">
@@ -155,10 +100,10 @@ const Home: React.FC = () => {
               </div>
               <button 
                 onClick={() => loadData(selectedCity)} 
-                className="flex items-center text-sm text-brand-600 dark:text-brand-400 hover:underline"
+                disabled={isFetching}
+                className="flex items-center text-sm text-brand-600 dark:text-brand-400 hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <RotateCcw size={14} className="mr-1" />
-                Refresh
+                <RotateCcw size={14} className="mr-1" /> Refresh
               </button>
             </div>
             
@@ -199,9 +144,6 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-            {/* --- ADSENSE FIX --- Ad is now inside the !loading && data check */}
-            <AdPlaceholder slot="7220504723" className="mb-8" label="Sponsored" />
-
             {/* Fuel Section */}
             <div className="mb-8">
               <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 flex items-center">
@@ -232,9 +174,6 @@ const Home: React.FC = () => {
               </div>
             </div>
             
-            {/* --- ADSENSE FIX --- Ad is now inside the !loading && data check */}
-            <AdPlaceholder slot="7220504723" className="mb-8" />
-
             {/* Vegetables Section */}
             <div className="mb-8">
               <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 flex items-center">
@@ -270,32 +209,30 @@ const Home: React.FC = () => {
             {/* Data Source Disclaimer */}
             <div className="text-xs text-gray-400 text-center mt-6 mb-12">
               Source: {data.source}. Prices are indicative and may vary by local vendor. <br/>
-              Last Check: {new Date(data.lastUpdated).toLocaleTimeString()}
+              Last Check: {new Date(data.lastUpdated).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+            </div>
+        
+            {/* Static content is always visible */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 mb-12">
+              <div className="flex items-center mb-6">
+                <Info className="text-brand-600 mr-2" />
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Market Insights & FAQs</h2>
+              </div>
+              
+              <div className="space-y-8">
+                <section>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Why do Gold rates fluctuate daily?</h3>
+                  <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                    Gold prices in India are influenced by international market trends, currency exchange rates (USD to INR), and import duties. 
+                    Additionally, local factors such as festive demand (weddings, Diwali) and monsoon quality can impact the daily rate of 22K and 24K gold. 
+                    We track these changes daily to provide you with the most accurate estimates.
+                  </p>
+                </section>
+              </div>
             </div>
           </>
         )}
-
-        {!loading && !data && (
-          <div className="text-center text-red-500 bg-white dark:bg-gray-800 p-8 rounded-lg shadow mb-8">
-            <p className="mb-2">We encountered an issue fetching the latest rates.</p>
-            <button 
-                onClick={() => loadData(selectedCity)} 
-                className="text-brand-600 font-medium hover:underline"
-              >
-                Try Again
-              </button>
-          </div>
-        )}
       </div>
-
-      {/* --- ADSENSE FIX --- Sticky Bottom Ad is already correctly conditioned */}
-      {!loading && data && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-40 p-2 hidden md:block">
-           <div className="max-w-[728px] mx-auto">
-             <AdPlaceholder slot="7220504723" className="my-0" label="" />
-           </div>
-        </div>
-      )}
     </div>
   );
 };

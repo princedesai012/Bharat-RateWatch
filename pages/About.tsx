@@ -1,6 +1,7 @@
 import React from 'react';
-import { TrendingUp, ShieldCheck, Clock } from 'lucide-react';
+import { TrendingUp, ShieldCheck, Database, Target } from 'lucide-react';
 import SEO from '../components/SEO';
+import { Link } from 'react-router-dom';
 
 const About: React.FC = () => {
   return (
@@ -15,56 +16,49 @@ const About: React.FC = () => {
           
           <div className="prose dark:prose-invert max-w-none">
             <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
-              Welcome to <strong>Daily Rates India</strong>, your premier destination for transparent and real-time commodity pricing. 
-              In an economy where prices fluctuate by the hour, we believe every consumer deserves access to accurate market data 
-              to make informed financial and household decisions.
+              Welcome to <strong>Daily Rates India</strong>. In an economy where prices for essential commodities can change overnight, we believe every consumer deserves free and easy access to transparent, accurate, and up-to-date market data.
             </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 my-12">
-              <div className="text-center p-4">
-                <div className="bg-brand-50 dark:bg-gray-700 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-600">
-                  <TrendingUp size={24} />
-                </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Real-Time Tracking</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Continuous monitoring of market trends across major Indian metros.</p>
-              </div>
-              <div className="text-center p-4">
-                <div className="bg-brand-50 dark:bg-gray-700 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-600">
-                  <ShieldCheck size={24} />
-                </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Verified Sources</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Data aggregated from government notifications and reputed market indices.</p>
-              </div>
-              <div className="text-center p-4">
-                <div className="bg-brand-50 dark:bg-gray-700 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-600">
-                  <Clock size={24} />
-                </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Daily Updates</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Automated refreshes ensure you never see outdated pricing.</p>
-              </div>
+            
+            <div className="bg-brand-50 dark:bg-gray-700/50 p-6 rounded-lg my-8 border-l-4 border-brand-500">
+                <h2 className="text-2xl font-bold mt-0 mb-4 text-gray-900 dark:text-white flex items-center">
+                    <Target className="mr-3 text-brand-600" /> Our Mission
+                </h2>
+                <p className="text-gray-700 dark:text-gray-300">
+                    Our mission is to empower Indian consumers and small businesses by democratizing financial information. We aim to be the most reliable, user-friendly platform for tracking daily-use commodity prices, helping you make informed decisions—whether you're managing household budgets, investing in precious metals, or simply staying aware of economic trends.
+                </p>
             </div>
 
-            <h2 className="text-2xl font-bold mt-8 mb-4 text-gray-900 dark:text-white">Our Mission</h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
-              Founded in 2024, our mission is to simplify the complex world of commodity trading for the common man. 
-              Whether you are a homemaker budgeting for the week's groceries, an investor tracking gold trends, or a commuter calculating fuel costs, 
-              Daily Rates India provides the insights you need in a clean, ad-friendly interface.
-            </p>
-
-            <h2 className="text-2xl font-bold mt-8 mb-4 text-gray-900 dark:text-white">How We Gather Data</h2>
+            <h2 className="text-2xl font-bold mt-12 mb-4 text-gray-900 dark:text-white flex items-center">
+              <Database className="mr-3 text-brand-600" /> Our Data Sourcing Philosophy
+            </h2>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              We utilize advanced technology to aggregate data from multiple public sources:
+              Transparency is at the core of what we do. The prices you see on our platform are not arbitrary; they are the result of a rigorous, technology-driven process. Here’s how we ensure our data is as reliable as possible:
             </p>
-            <ul className="list-disc pl-6 space-y-2 text-gray-600 dark:text-gray-400 mb-6">
-              <li><strong>Fuel:</strong> Direct feeds from Oil Marketing Companies (OMCs) like IOCL and HPCL.</li>
-              <li><strong>Metals:</strong> Real-time bullion market APIs and spot price indicators.</li>
-              <li><strong>Vegetables:</strong> Wholesale market (Mandi) averages provided by government agricultural portals.</li>
+            <ul className="list-disc pl-6 space-y-3 text-gray-600 dark:text-gray-400 mb-6">
+              <li>
+                <strong>AI-Powered Aggregation:</strong> We utilize Google's powerful Gemini AI model with Search Grounding capabilities. This allows us to scan and aggregate real-time data from hundreds of reputable public sources, including official news outlets, government portals, and financial market websites.
+              </li>
+              <li>
+                <strong>Public APIs:</strong> For certain commodities, we tap into official public APIs provided by government bodies and major corporations (like Oil Marketing Companies) to get the most direct and accurate price feeds.
+              </li>
+              <li>
+                <strong>Cross-Verification:</strong> Data from multiple sources is cross-referenced to identify and filter out anomalies. Our system flags significant deviations, ensuring that a temporary error on one source doesn't affect the final price displayed.
+              </li>
+               <li>
+                <strong>Regular Updates:</strong> Our entire data pipeline is automated to refresh every few hours, ensuring the prices reflect the latest market conditions.
+              </li>
             </ul>
 
-            <h2 className="text-2xl font-bold mt-8 mb-4 text-gray-900 dark:text-white">Get in Touch</h2>
+            <h2 className="text-2xl font-bold mt-12 mb-4 text-gray-900 dark:text-white flex items-center">
+              <ShieldCheck className="mr-3 text-brand-600" /> Our Commitment to Accuracy
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              While we strive for 100% accuracy, it's important for our users to understand that the prices displayed are indicative market averages. Prices can vary slightly from city to city, and even from one vendor to another. We are not a financial advisory service. Our goal is to provide a reliable snapshot of the market to help with your planning and analysis. For a detailed breakdown of our data usage, please read our <Link to="/disclaimer" className="text-brand-600 hover:underline">Disclaimer</Link>.
+            </p>
+
+            <h2 className="text-2xl font-bold mt-12 mb-4 text-gray-900 dark:text-white">Join Us on Our Journey</h2>
             <p className="text-gray-600 dark:text-gray-400">
-              We are constantly improving. If you notice a discrepancy or have suggestions for new features, 
-              please visit our <a href="/#/contact" className="text-brand-600 hover:underline">Contact page</a>.
+              Daily Rates India was built for the community. We are constantly working to add new features, track more commodities, and improve our data accuracy. If you have any feedback or suggestions, we would love to hear from you. Please get in touch via our <Link to="/contact" className="text-brand-600 hover:underline">Contact page</Link>.
             </p>
           </div>
         </div>
