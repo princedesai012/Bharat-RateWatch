@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, TrendingUp, Gift } from 'lucide-react'; // Gift icon add kiya hai
+import { Menu, X, TrendingUp } from 'lucide-react';
 import DarkModeToggle from './DarkModeToggle';
 import { NAV_ITEMS } from '../constants';
 
@@ -9,9 +9,6 @@ const Header: React.FC = () => {
   const location = useLocation();
 
   const toggleMenu = () => setIsOpen(!isOpen);
-
-  // Aapki Smart Link
-  const smartLink = "https://www.effectivegatecpm.com/rbh1tbquz?key=af6725f554d2360e67a427f54d4d4b32";
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm">
@@ -28,7 +25,7 @@ const Header: React.FC = () => {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex space-x-6 items-center">
+          <nav className="hidden md:flex space-x-8 items-center">
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.path}
@@ -42,18 +39,6 @@ const Header: React.FC = () => {
                 {item.label}
               </Link>
             ))}
-            
-            {/* 👇 SMART LINK BUTTON ADDED HERE 👇 */}
-            <a 
-              href={smartLink}
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center space-x-1 bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide animate-pulse transition-all shadow-md hover:shadow-lg"
-            >
-              <Gift size={14} />
-              <span>Special Offer</span>
-            </a>
-
             <DarkModeToggle />
           </nav>
 
@@ -88,15 +73,6 @@ const Header: React.FC = () => {
                 {item.label}
               </Link>
             ))}
-            {/* Mobile Menu Smart Link */}
-            <a 
-              href={smartLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block w-full text-left px-3 py-2 text-base font-bold text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20"
-            >
-              🎁 Check Special Offer
-            </a>
           </div>
         </div>
       )}
