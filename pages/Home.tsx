@@ -8,6 +8,7 @@ import { PriceData, City } from '../types';
 import { CITIES, DEFAULT_PRICES } from '../constants';
 import PriceCard from '../components/PriceCard';
 import SEO from '../components/SEO';
+import AdsterraBanner from '../components/AdsterraBanner';
 
 const LoadingSpinner: React.FC = () => (
   <div className="flex justify-center items-center py-24">
@@ -144,6 +145,8 @@ const Home: React.FC = () => {
               </div>
             </div>
 
+            <AdsterraBanner />
+            
             {/* Fuel Section */}
             <div className="mb-8">
               <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 flex items-center">
