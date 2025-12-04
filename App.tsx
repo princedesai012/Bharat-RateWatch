@@ -11,11 +11,13 @@ import Disclaimer from './pages/Disclaimer';
 import GoldGuide from './pages/GoldGuide';
 import FuelGuide from './pages/FuelGuide';
 import NotFound from './pages/NotFound';
+import TelegramTracker from './components/TelegramTracker';
 
 const App: React.FC = () => {
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
+        <TelegramTracker />
         <Header />
         <main className="flex-grow">
           <Routes>
