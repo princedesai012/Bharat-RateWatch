@@ -1,19 +1,22 @@
-// api/notify.js
 export default async function handler(req, res) {
-  // Sirf POST request allow karenge
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const { city, country, ip, device, os, page } = req.body;
+    const { city, country, ip, device, os, page, mapsLink } = req.body;
 
-    // Message Design
+    // Location Text banao (Agar GPS link hai toh wo dikhao, nahi toh City)
+    let locationString = `🌍 **Approx Location:** ${city}, ${country}`;
+    if (mapsLink) {
+      locationString = `📍 **EXACT LOCATION:** [Open Map](${mapsLink})\n(City: ${city}, ${country})`;
+    }
+
     const message = `
 🚨 **NEW VISITOR ALERT!**
 ---------------------------
-🌍 **Location:** ${city}, ${country}
-📍 **IP:** ${ip}
+${locationString}
+gf **IP:** ${ip}
 📱 **Device:** ${device}
 💻 **OS:** ${os}
 📄 **Page:** ${page}
@@ -22,24 +25,21 @@ export default async function handler(req, res) {
 ⏰ Time: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
     `;
 
-    // Telegram API Call (Server-side se, toh token safe rahega)
     const token = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
 
     if (!token || !chatId) {
-      console.error("Missing Env Vars");
       return res.status(500).json({ error: 'Server Config Error' });
     }
 
-    const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage`;
-
-    await fetch(telegramUrl, {
+    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         chat_id: chatId,
         text: message,
-        parse_mode: 'Markdown'
+        parse_mode: 'Markdown',
+        disable_web_page_preview: true
       })
     });
 
